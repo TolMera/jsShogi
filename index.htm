@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>jsShogi - Interface to neShogi Engine</title>
+		
+		<!-- CDN -->
+		<!-- JQUERY -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!-- JQUERY UI -->
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<!-- BOOTSTRAP -->
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js" integrity="sha384-feJI7QwhOS+hwpX2zkaeJQjeiwlhOP+SdQDqhgvvo1DsjtiSQByFdThsxO669S2D" crossorigin="anonymous"></script>
+
+		<!-- LIBS -->
+		<!-- SWEET ALERT 2 -->
+		<script src="./assets/js/swal.js"></script>
+		
+		<!-- OWN CODE -->
+		<script src="./main/js/singlePlayer.js"></script>
+
+		<!-- CSS -->
+		<style>
+			label {
+				padding: 5px 0px 0px 0px;
+			}
+		</style>
+		
+		<!-- Scripting -->
+		<script>
+			var game = undefined;
+		</script>
+	</head>
+
+	<body>
+		<script>
+			$(() => {
+				swal({
+					title:	'Welcome!',
+					html:	`
+								<div class="col-md-12 text-center">
+									What would you like to do today?<br />
+								</div>
+								<br />
+								<div class="col-md-12">
+									<button value="1" class="btn btn-outline-success btn-block">Single Player</button><br />
+									<button value="2" class="btn btn-outline-primary btn-block" disabled>Multi Player</button><br />
+									<button value="3" class="btn btn-outline-info btn-block" disabled>Learn Shogi</button><br />
+									<button value="4" class="btn btn-outline-warning btn-block" disabled>News</button>
+								</div>
+							`,
+					footer:	'jsShogi on&nbsp;<a href="https://github.com/TolMera/jsShogi">Git Hub</a>',
+					showConfirmButton: false,
+      				showCancelButton: false
+				});
+				$('button').click((trigger) => {
+					switch ($(trigger.target).attr('value')) {
+						case "1":
+							// New Game
+							game = new singlePlayer();
+						break;
+						// TODO: Other options
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
