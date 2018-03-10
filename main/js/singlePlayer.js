@@ -12,9 +12,9 @@ var singlePlayer = class {
 		$('body').append(this.shogiBoardHtml());
 		// Set board height and width to half screen.
 		$('#board').css({
-			height:	'50vh',
+			height:			'50vh',
 			'max-height':	'50vh',
-			width:	'50vh',
+			width:			'50vh',
 			'max-width':	'50vh'
 		});
 		// After that has taken effect, it's height/width can be used in calculations
@@ -69,10 +69,10 @@ var singlePlayer = class {
 			`,
 			showConfirmButton: false,
 			showCancelButton: false,
-			footer: `<button id="startGameButton" class="btn btn-primary">Start Game</button>`
+			footer: `<button id="startGameButton" class="btn btn-primary pull-right">Start Game</button>`
 		});
-		$('#startGameButton').click(function() {
-			game.create.apply(game);
+		$('#startGameButton').click(function(trigger) {
+			game.create.call(game, trigger);
 		});
 	}
 	
@@ -98,15 +98,16 @@ var singlePlayer = class {
 
 		this.player = vals.colour;
 		
-		let game = $.getJSON({
+		$.getJSON({
 			url:		`http://localhost:3000/newGame/${vals.handicap}`,
 			dataType:	'json'
 		}).then((json) => {
-			console.log(json);
 			this.gameId = json.gameId;
 			this.readBoard().then((data) => {
 				this.updateBoard(data);
 			});
+		}, (json, error, other) => {
+			$(trigger.target).parent().prepend(`<span class="col pull-left">An error occured, please try again later (sorry) - error: ${error}</span>`);
 		});
 	}
 	
@@ -121,9 +122,17 @@ var singlePlayer = class {
 	updateBoard(data) {
 		$('#board td').each((index, item) => {
 			if (data[index] != undefined) {
-				$(item).append(data[index].player);
-				$(item).append(data[index].name);
-				$(item).append(data[index].promoted);
+				let icon;
+				if (data[index].name == 'King') {
+					icon = window.pieces.getIcon.call(window.pieces, data[index].name, false, data[index].player);
+				} else {
+					icon = window.pieces.getIcon.call(window.pieces, data[index].name, data[index].promoted);
+				}
+				let piece = $(`<img src="${icon}" />`);
+				piece = $(item).append(piece);
+				if (data[index].player == 'white') {
+					piece.addClass('white');
+				}
 			} else {
 				$(item).empty();
 			}

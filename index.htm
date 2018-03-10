@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>jsShogi - Interface to neShogi Engine</title>
 		
+		<!-- Would like to put in a fallback for those situations where CDN fails (network??) -->
 		<!-- CDN -->
 		<!-- JQUERY -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -21,6 +22,7 @@
 		
 		<!-- OWN CODE -->
 		<script src="./main/js/singlePlayer.js"></script>
+		<script src="./main/js/shogiPieces.js"></script>
 
 		<!-- CSS -->
 		<style>
@@ -32,6 +34,7 @@
 		<!-- Scripting -->
 		<script>
 			var game = undefined;
+			var pieces = new shogiPieces();
 		</script>
 	</head>
 
