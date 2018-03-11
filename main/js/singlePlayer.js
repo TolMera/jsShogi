@@ -37,8 +37,8 @@ var singlePlayer = class {
 						<label class="col-md-4">Black or White?</label>
 						<div class="col">
 							<select name="colour" class="form-control">
-								<option selected>Black</option>
-								<option>White</option>
+								<option value="black" selected>Black</option>
+								<option value="white">White</option>
 							</select>
 						</div>
 					</div>
@@ -78,10 +78,10 @@ var singlePlayer = class {
 	
 	shogiBoardHtml() {
 		let board = '<table id="board" class="table table-bordered">';
-		for (let x in [0,1,2,3,4,5,6,7,8]) {
+		for (let x of [0,1,2,3,4,5,6,7,8]) {
 			board += '<tr>';
-			for (let y in [0,1,2,3,4,5,6,7,8]) {
-				board += '<td></td>';
+			for (let y of [1,2,3,4,5,6,7,8,9]) {
+				board += `<td data-position="${(x*9)+y}"></td>`;
 			}
 			board += '</tr>';
 		}
@@ -97,6 +97,7 @@ var singlePlayer = class {
 		});
 
 		this.player = vals.colour;
+		this.turn = 'black';
 		
 		$.getJSON({
 			url:		`http://localhost:3000/newGame/${vals.handicap}`,
@@ -120,7 +121,9 @@ var singlePlayer = class {
 	}
 	
 	updateBoard(data) {
+		window.log('Updating board');
 		$('#board td').each((index, item) => {
+			$(item).empty();
 			if (data[index] != undefined) {
 				let icon;
 				if (data[index].name == 'King') {
@@ -129,13 +132,50 @@ var singlePlayer = class {
 					icon = window.pieces.getIcon.call(window.pieces, data[index].name, data[index].promoted);
 				}
 				let piece = $(`<img src="${icon}" />`);
-				piece = $(item).append(piece);
+				$(item).append(piece);
 				if (data[index].player == 'white') {
 					piece.addClass('white');
+				} else {
+					piece.addClass('black');
 				}
+				piece.addClass('shogiPiece');
 			} else {
 				$(item).empty();
 			}
 		});
+	}
+	
+	move(start, end, player) {
+		let before = $('#board').clone();
+		this._move = $.getJSON({
+			url:		`http://localhost:3000/move/${this.gameId}/${player||this.player}/${start}/${end}`
+		}).then((json) => {
+			if (json.result == false) {
+				swal(json.error);
+				$('#board').replaceWith(before);
+			} else if (json.result == true) {
+				let td = $(`td[data-position=${start}]`);
+				let clone = $(td).find('img').clone();
+				$(`td[data-position=${end}]`).empty().append(clone);
+				$(td).empty();
+				
+				this.next();
+			}
+			// Move complete, check did user 'take' a piece, and add it to the hand.
+			console.log(json);
+		}, (json, state) => {
+			// Shit happened
+		});
+	}
+	
+	next() {
+		// next player turn
+		switch (this.turn) {
+			case 'white': this.turn = 'black'; break;
+			case 'black': this.turn = 'white'; break;
+		}
+		if (this.turn != this.player) {
+			// Computers turn
+		}
 	}
 }

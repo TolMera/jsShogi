@@ -23,18 +23,36 @@
 		<!-- OWN CODE -->
 		<script src="./main/js/singlePlayer.js"></script>
 		<script src="./main/js/shogiPieces.js"></script>
+		<script src="./main/js/shogiMouse.js"></script>
+		<script src="./main/js/engineInterface.js"></script>
 
 		<!-- CSS -->
 		<style>
 			label {
 				padding: 5px 0px 0px 0px;
 			}
+			
+			.white {
+				transform:	rotate(180deg);
+			}
+			.shogiPiece {
+				max-width:	5.55vh;
+				max-height: 5.55vh;
+			}
+			td {
+				padding: 0px 0px 0px 0px;
+			}
 		</style>
 		
 		<!-- Scripting -->
 		<script>
-			var game = undefined;
-			var pieces = new shogiPieces();
+			window.log = function() {
+				if (window.location.hostname == "localhost" || window.location.hostname == "") {
+					console.log(arguments);
+				} else {
+					// do nothing, this is not debugging
+				}
+			}
 		</script>
 	</head>
 
@@ -63,7 +81,10 @@
 					switch ($(trigger.target).attr('value')) {
 						case "1":
 							// New Game
-							game = new singlePlayer();
+							window.game = new singlePlayer();
+							window.pieces = new shogiPieces();
+							window.controls = new shogiMouse();
+							window.interface = new engineInterface();
 						break;
 						// TODO: Other options
 					}
