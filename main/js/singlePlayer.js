@@ -176,6 +176,11 @@ var singlePlayer = class {
 		}
 		if (this.turn != this.player) {
 			// Computers turn
+			$.getJSON({
+				url:		`http://localhost:3000/engine/${this.gameId}`
+			}).then({
+				
+			});
 		}
 	}
 }
