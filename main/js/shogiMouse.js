@@ -34,16 +34,16 @@ window.shogiMouse = class {
 	
 	movePiece(trigger) {
 		// Get the start and end positions.
-		let $start = $(this._state.piece).parent().data('position');
-		let $end = undefined;
+		let start = $(this._state.piece).parent().data('position');
+		let end = undefined;
 		if ($(trigger.target).is('td')) {
-			$end = $(trigger.target).data('position');
+			end = $(trigger.target).data('position');
 		} else {
-			$end = $(trigger.target).parent().data('position');
+			end = $(trigger.target).parent().data('position');
 		}
 		
 		// move piece
-		window.game.move($start, $end);
+		window.game.move(start, end);
 		this._state.piece = undefined;
 	}
 }

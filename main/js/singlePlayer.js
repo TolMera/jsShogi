@@ -25,8 +25,7 @@ var singlePlayer = class {
 		});
 		
 		$('#board').css({
-			border:	'3px double black',
-			transform:	'scale(-1, 1)'
+			border:	'3px double black'
 		});
 		
 		swal({
@@ -123,6 +122,7 @@ var singlePlayer = class {
 	updateBoard(data) {
 		window.log('Updating board');
 		$('#board td').each((index, item) => {
+			index++;
 			$(item).empty();
 			if (data[index] != undefined) {
 				let icon;
@@ -178,8 +178,12 @@ var singlePlayer = class {
 			// Computers turn
 			$.getJSON({
 				url:		`http://localhost:3000/engine/${this.gameId}`
-			}).then({
-				
+			}).then((json) => {
+				console.log(json);
+				if (json.result == true) {
+					this.readBoard().then(this.updateBoard);
+					this.next();
+				}
 			});
 		}
 	}
