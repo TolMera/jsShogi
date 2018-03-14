@@ -176,13 +176,19 @@ var singlePlayer = class {
 		}
 		if (this.turn != this.player) {
 			// Computers turn
-			$.getJSON({
+			let loopCount = 0;
+			let ajax = $.getJSON({
 				url:		`http://localhost:3000/engine/${this.gameId}`
 			}).then((json) => {
-				console.log(json);
 				if (json.result == true) {
 					this.readBoard().then(this.updateBoard);
 					this.next();
+				} if (json.result == false) {
+					swal({
+						title:	'Engine Failure',
+						text:	`Sorry but the AI engine can't find a move, would you like to make a move for the engine?  (TODO: Under Development)`,
+						type:	'error'
+					});
 				}
 			});
 		}
