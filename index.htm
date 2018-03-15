@@ -28,6 +28,10 @@
 
 		<!-- CSS -->
 		<style>
+			body {
+				height: 100vh;
+			}
+			
 			label {
 				padding: 5px 0px 0px 0px;
 			}
@@ -36,12 +40,29 @@
 				transform:	rotate(180deg);
 			}
 			.shogiPiece {
-				max-width:	5.55vh;
-				max-height: 5.55vh;
+				max-width:	8.0vh;
+				padding: 1vh;
+				max-height: 8.0vh;
 			}
-			td {
-				padding: 0px 0px 0px 0px;
+			#board {
+				height: 80vh;
+				width: 80vh;
+				margin: 30px auto;
+				padding: 7px 0px 0px 1px;
+				border:	3px double black;
 			}
+			#board > div {
+				border: 0.5px solid black;
+				width: 8.75vh;
+				height: 8.84vh;
+				display: inline-block;
+				overflow: hidden;
+				margin: -6px 0px 0px 0px;
+			}
+			img {
+				position: relative;
+			}
+
 		</style>
 		
 		<!-- Scripting -->

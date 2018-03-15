@@ -5,13 +5,13 @@ window.shogiMouse = class {
 		
 		console.log('Attaching mouse controller');
 		
-		$('body').on('click', '#board td', (trigger) => {
+		$('body').on('click', '#board div', (trigger) => {
 			this.clickPiece.call(this, trigger);
 		});
 	}
 	
 	clickPiece(trigger) {
-		if ($(trigger.target).is('td') && this._state.piece != undefined) {
+		if ($(trigger.target).is('div') && this._state.piece != undefined) {
 			this.movePiece.call(this, trigger);
 		} else if ($(trigger.target).hasClass('shogiPiece') == true && this._state.piece != undefined) {
 			if ($(trigger.target).hasClass(window.game.player)) {
@@ -36,7 +36,7 @@ window.shogiMouse = class {
 		// Get the start and end positions.
 		let start = $(this._state.piece).parent().data('position');
 		let end = undefined;
-		if ($(trigger.target).is('td')) {
+		if ($(trigger.target).is('div')) {
 			end = $(trigger.target).data('position');
 		} else {
 			end = $(trigger.target).parent().data('position');

@@ -10,23 +10,6 @@ var singlePlayer = class {
 		// Clear the body of the browser and layout a new Shogi board
 		$('body').empty();
 		$('body').append(this.shogiBoardHtml());
-		// Set board height and width to half screen.
-		$('#board').css({
-			height:			'50vh',
-			'max-height':	'50vh',
-			width:			'50vh',
-			'max-width':	'50vh'
-		});
-		// After that has taken effect, it's height/width can be used in calculations
-		$('#board').css({
-			position: 'absolute',
-			top:		window.innerHeight / 4,
-			left:		(window.innerWidth / 2) - ($('#board').height() / 2)
-		});
-		
-		$('#board').css({
-			border:	'3px double black'
-		});
 		
 		swal({
 			title:	'Game Options',
@@ -72,19 +55,18 @@ var singlePlayer = class {
 		});
 		$('#startGameButton').click(function(trigger) {
 			game.create.call(game, trigger);
+			swal.close();
 		});
 	}
 	
 	shogiBoardHtml() {
-		let board = '<table id="board" class="table table-bordered">';
+		let board = '<div id="board">';
 		for (let x of [0,1,2,3,4,5,6,7,8]) {
-			board += '<tr>';
 			for (let y of [1,2,3,4,5,6,7,8,9]) {
-				board += `<td data-position="${(x*9)+y}"></td>`;
+				board += `<div class="text-center" data-position="${(x*9)+y}">&nbsp;</div>`;
 			}
-			board += '</tr>';
 		}
-		board += '</table>';
+		board += '</div>';
 		return board;
 	}
 	
@@ -121,7 +103,7 @@ var singlePlayer = class {
 	
 	updateBoard(data) {
 		window.log('Updating board');
-		$('#board td').each((index, item) => {
+		$('#board > div').each((index, item) => {
 			index++;
 			$(item).empty();
 			if (data[index] != undefined) {
@@ -144,7 +126,7 @@ var singlePlayer = class {
 			}
 		});
 	}
-	
+		
 	move(start, end, player) {
 		let before = $('#board').clone();
 		this._move = $.getJSON({
@@ -154,10 +136,10 @@ var singlePlayer = class {
 				swal(json.error);
 				$('#board').replaceWith(before);
 			} else if (json.result == true) {
-				let td = $(`td[data-position=${start}]`);
-				let clone = $(td).find('img').clone();
-				$(`td[data-position=${end}]`).empty().append(clone);
-				$(td).empty();
+				let div = $(`div[data-position=${start}]`);
+				let clone = $(div).find('img').clone();
+				$(`div[data-position=${end}]`).empty().append(clone);
+				$(div).empty();
 				
 				this.next();
 			}
